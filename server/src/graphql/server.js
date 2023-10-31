@@ -6,6 +6,7 @@ import { context } from "./context.js";
 (async () => {
   const server = new ApolloServer({
     schema: await buildSuperSchema(),
+    introspection: true
   });
 
   const { url } = await startStandaloneServer(server, {
