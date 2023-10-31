@@ -1,0 +1,36 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "graphql server",
+  "main": "src/graphql/server.js",
+  "scripts": {
+    "start": "node src/graphql/server.js",
+    "dev": "nodemon src/graphql/server.js",
+    "prisma:create": "npx prisma migrate dev --create-only",
+    "prisma:mig": "npx prisma migrate dev --name init",
+    "prisma:db": "npx prisma db ",
+    "prisma:format": "npx prisma format ",
+    "prisma:migrate": "npx prisma migrate dev",
+    "prisma:studio": "npx prisma studio ",
+    "prisma:generate": "npx prisma generate",
+    "prisma:seed": "ts-node prisma/seed.ts",
+    "prisma:dump": "npx prisma migrate reset --force && npx prisma migrate deploy"
+  },
+  "dependencies": {
+    "@apollo/server": "^4.9.5",
+    "@graphql-tools/schema": "^10.0.0",
+    "@graphql-tools/stitch": "^9.0.3",
+    "@prisma/client": "5.5.2",
+    "apollo-server": "^3.12.1",
+    "eslint": "^8.52.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.1",
+    "graphql": "^16.8.1",
+    "graphql-scalars": "^1.22.4",
+    "nodemon": "^3.0.1",
+    "prisma": "^5.5.2"
+  },
+  "author": "",
+  "license": "ISC"
+}

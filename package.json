@@ -1,0 +1,15 @@
+{
+  "name": "curly-palm-tree",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "pnpm -r --parallel start",
+    "dev": "pnpm -r --parallel dev",
+    "server:dev": "pnpm -r --parallel --filter server dev",
+    "client:dev": "pnpm -r --parallel --filter client dev",
+    "prisma:generate": "pnpm --filter server prisma:generate",
+    "prisma:mig": "pnpm --filter server prisma:mig"
+  },
+  "author": "@victormutai",
+  "license": "ISC"
+}
