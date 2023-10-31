@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "graphql server",
   "main": "src/graphql/server.js",
+  "type": "module",
   "scripts": {
     "start": "node src/graphql/server.js",
     "dev": "nodemon src/graphql/server.js",
