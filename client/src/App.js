@@ -1,25 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import { SideNav } from "./components/side-nav";
+import { MainChat } from "./components/main-chat";
 
 function App() {
+  const [activeChannel, setActiveChannel] = useState(channels[0]);
+  const [currentUser] = useState({
+    username: "victor",
+    id: 1
+  });
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <main className="h-screen flex">
+      <SideNav
+        channels={channels}
+        activeChannel={activeChannel}
+        setActiveChannel={setActiveChannel}
+        currentUser={currentUser}
+      />
+      <MainChat activeChannel={activeChannel} />
+    </main>
   );
 }
 
 export default App;
+
+const channels = ["general", "random"];
