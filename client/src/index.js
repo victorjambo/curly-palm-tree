@@ -7,6 +7,7 @@ import { ApolloProvider } from "@apollo/client";
 import AppProvider from "./context/app.provider";
 import AuthProvider from "./context/auth.provider";
 import { client } from "./utils/apollo-client";
+import ChatsProvider from "./context/chats.provider";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -14,7 +15,9 @@ root.render(
     <ApolloProvider client={client}>
       <AuthProvider>
         <AppProvider>
-          <App />
+          <ChatsProvider>
+            <App />
+          </ChatsProvider>
         </AppProvider>
       </AuthProvider>
     </ApolloProvider>

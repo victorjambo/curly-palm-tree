@@ -11,7 +11,7 @@ import Toast from "../toast";
  * @param {React.JSX.Element} props.children
  * @param {string} props.title
  * @param {string} props.width
- * @returns JSX.Element
+ * @returns {React.JSX.Element}
  */
 const Modal = ({
   show,

@@ -1,16 +1,16 @@
 import Jazzicon from "./avatar";
 
 /**
- * Single Chat component
- * @param {{
- *   chat: {
- *     id: string;
- *     username: string;
- *     timestamp: string;
- *     message: string;
- *   }
- * }}
- * @returns React.JSX.Element
+ * Chat component
+ * @param {Object} props
+ * @param {Chat[]} props.chats
+ * @typedef Chat
+ * @type {Object}
+ * @property {number} id
+ * @property {string} message
+ * @property {string} username
+ * @property {string} timestamp
+ * @returns {React.JSX.Element}
  */
 export function Chat({ chat }) {
   return (

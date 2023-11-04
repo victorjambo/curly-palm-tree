@@ -1,27 +1,28 @@
 import { useState } from "react";
 import { PaperAirplaneIcon } from "@heroicons/react/24/solid";
+import { useChatsContext } from "../context/chats.provider";
 
 /**
  * Input field component
- * @param {{
- *   activeChannel: string;
- *   sendChat: (message: {
- *     id: string;
- *     img: string;
- *     username: string;
- *     timestamp: string;
- *     message: string;
- *   }) => void;
- * }}
- * @returns React.JSX.Element
+ * @param {Object} props
+ * @param {(message: Chat) => void} props.sendChat
+ *
+ * @typedef Chat
+ * @type {Object}
+ * @property {number} id
+ * @property {string} message
+ * @property {string} username
+ * @property {string} timestamp
+ * @returns {React.JSX.Element}
  */
-export function TextArea({ activeChannel, sendChat }) {
+export function TextArea({ sendChat }) {
   const [value, setValue] = useState("");
+
+  const { activeChannel } = useChatsContext();
 
   const handleSendChat = () => {
     sendChat({
       id: value,
-      img: "https://avatars2.githubusercontent.com/u/343407?s=460&v=4",
       username: "victor",
       timestamp: "11:46",
       message: value,
@@ -30,11 +31,11 @@ export function TextArea({ activeChannel, sendChat }) {
 
   /**
    * On Input Change
-   * @param {React.KeyboardEvent<HTMLInputElement>} e
+   * @param {React.KeyboardEvent<HTMLInputElement>} event
    */
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
       handleSendChat();
       setValue("");
     }
@@ -46,7 +47,7 @@ export function TextArea({ activeChannel, sendChat }) {
         <input
           type="text"
           className="w-full px-4 outline-none"
-          placeholder={`Message #${activeChannel}`}
+          placeholder={`Message #${activeChannel?.name}`}
           value={value}
           onChange={(e) => setValue(e.target.value)}
           onKeyDown={handleKeyDown}

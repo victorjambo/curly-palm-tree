@@ -2,18 +2,18 @@
  * @typedef ContextProps
  * @type {Object}
  * @property {boolean} isAuth
- * @property {React.Dispatch<React.SetStateAction<boolean>>} setIsAuth
+ * @property {(arg: boolean) => void} setIsAuth
  * @property {boolean} showModal
- * @property {React.Dispatch<React.SetStateAction<boolean>>} setShowModal
+ * @property {(arg: boolean) => void} setShowModal
  * @property {string} token
- * @property {React.Dispatch<React.SetStateAction<string>>} setToken
- * @property {{ id: number; email: string; name: string }} user
- * @property {React.Dispatch<React.SetStateAction<{ id: number; email: string; name: string }>>} setUser
+ * @property {(token: string) =>  void} setToken
+ * @property {{ id: number; name: string }} user
+ * @property {(arg: { id: number; name: string }) => void} setUser
  * @property {{Login: "Login", Signup: "Signup"}} authType
- * @property {React.Dispatch<React.SetStateAction<{Login: "Login", Signup: "Signup"}>>} setAuthType
+ * @property {(arg: {Login: "Login", Signup: "Signup"}) => void} setAuthType
  */
 
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
 
 /**
  * Create context.
@@ -35,21 +35,20 @@ const AuthProvider = ({ children }) => {
   const [token, setToken] = useState("");
   const [authType, setAuthType] = useState(AuthType.Login);
   const [user, setUser] = useState({
-    id: 0,
-    email: "",
-    name: "",
+    id: 1,
+    name: "Jack",
   });
 
-  useEffect(() => {
-    const _token = localStorage.getItem("token");
-    const _user = localStorage.getItem("user");
-    if (_user) {
-      setUser(JSON.parse(_user));
-      setIsAuth(true);
-      setToken(_token?.replaceAll('"', "") || "");
-    }
-    // Interceptors for apollo
-  }, []);
+  // useEffect(() => {
+  //   const _token = localStorage.getItem("token");
+  //   const _user = localStorage.getItem("user");
+  //   if (_user) {
+  //     setUser(JSON.parse(_user));
+  //     setIsAuth(true);
+  //     setToken(_token?.replaceAll('"', "") || "");
+  //   }
+  //   // Interceptors for apollo
+  // }, []);
 
   return (
     <AuthContext.Provider

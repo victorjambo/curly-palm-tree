@@ -1,16 +1,15 @@
 import { Chat } from "./chat";
 
 /**
- * Chats component
- * @param {{
- *   chats: {
- *     id: string;
- *     username: string;
- *     timestamp: string;
- *     message: string;
- *   }[]
- * }}
- * @returns React.JSX.Element
+ * @param {Object} props
+ * @param {Chat[]} props.chats
+ * @typedef Chat
+ * @type {Object}
+ * @property {number} id
+ * @property {string} message
+ * @property {string} username
+ * @property {string} timestamp
+ * @returns {React.JSX.Element}
  */
 export function Chats({ chats }) {
   return (

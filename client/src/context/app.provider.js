@@ -1,16 +1,13 @@
 /**
  * @typedef ContextProps
  * @type {Object}
- * @property {Object} currentUser
- * @property {string} currentUser.username
- * @property {number} currentUser.id
  * @property {string} toastMessage
- * @property {Dispatch<SetStateAction<string>>} setToastMessage
+ * @property {(message: string) => void} setToastMessage
  * @property {boolean} showToast
  * @property {"SUCCESS" | "WARN"} toastType
- * @property {React.Dispatch<React.SetStateAction<"SUCCESS" | "WARN">>} setToastType
+ * @property {(type: "SUCCESS" | "WARN") => void} setToastType
  * @property {(message: string, type: "SUCCESS" | "WARN") => void} handleToast
- * @property {React.Dispatch<React.SetStateAction<boolean>>} setShowToast
+ * @property {(show: boolean) => void} setShowToast
  */
 
 import { createContext, useContext, useState } from "react";
@@ -28,11 +25,6 @@ export const useAppContext = () => useContext(AppContext);
  * @returns {React.JSX.Element}
  */
 const AppProvider = ({ children }) => {
-  const [currentUser] = useState({
-    username: "victor",
-    id: 1,
-  });
-
   const [toastMessage, setToastMessage] = useState("");
   const [showToast, setShowToast] = useState(false);
   const [toastType, setToastType] = useState("SUCCESS");
@@ -52,7 +44,6 @@ const AppProvider = ({ children }) => {
   return (
     <AppContext.Provider
       value={{
-        currentUser,
         toastMessage,
         setToastMessage,
         showToast,
