@@ -37,6 +37,33 @@ export async function createChat(data) {
   const prisma = getPrismaClient();
 
   return await prisma.chat.create({
-    data: chat,
+    data,
   });
+}
+
+export async function getChatsByChannelId(channelId) {
+  /** @type {import('@prisma/client').PrismaClient} */
+  const prisma = getPrismaClient();
+
+  const chats = await prisma.chat.findMany({
+    where: {
+      channelId,
+    },
+    include: {
+      user: {
+        select: {
+          username: true,
+          id: true,
+        },
+      },
+      channel: {
+        select: {
+          id: true,
+          name: true,
+          createdAt: true,
+        },
+      },
+    },
+  });
+  return chats;
 }

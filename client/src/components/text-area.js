@@ -1,31 +1,39 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PaperAirplaneIcon } from "@heroicons/react/24/solid";
 import { useChatsContext } from "../context/chats.provider";
+import { useMutation } from "@apollo/client";
+import { CREATE_CHAT } from "../graphql/chats";
 
 /**
  * Input field component
- * @param {Object} props
- * @param {(message: Chat) => void} props.sendChat
- *
- * @typedef Chat
- * @type {Object}
- * @property {number} id
- * @property {string} message
- * @property {string} username
- * @property {string} timestamp
  * @returns {React.JSX.Element}
  */
-export function TextArea({ sendChat }) {
+export function TextArea() {
   const [value, setValue] = useState("");
 
-  const { activeChannel } = useChatsContext();
+  const { activeChannel, fetchChats } = useChatsContext();
+
+  const [createChat, { data, loading }] = useMutation(CREATE_CHAT);
+
+  useEffect(() => {
+    if (loading) return;
+    if (data && data.createChat.success) {
+      fetchChats?.({
+        variables: {
+          channelId: activeChannel.id,
+        },
+      });
+      setValue("");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loading]);
 
   const handleSendChat = () => {
-    sendChat({
-      id: value,
-      username: "victor",
-      timestamp: "11:46",
-      message: value,
+    createChat({
+      variables: {
+        message: value,
+        channelId: activeChannel.id,
+      },
     });
   };
 

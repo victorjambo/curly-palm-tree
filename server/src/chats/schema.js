@@ -22,6 +22,7 @@ export const typeDefs = gql`
 
   type Query {
     chats: [Chat]
+    getChatsByChannelId(channelId: Int!): [Chat]
   }
 
   type ChatMutationResponse {
@@ -30,6 +31,6 @@ export const typeDefs = gql`
   }
 
   type Mutation {
-    createChat(message: String!): ChatMutationResponse!
+    createChat(message: String!, channelId: Int!): ChatMutationResponse!
   }
 `;

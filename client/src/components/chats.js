@@ -1,24 +1,18 @@
 import { Chat } from "./chat";
+import { useChatsContext } from "../context/chats.provider";
 
-/**
- * @param {Object} props
- * @param {Chat[]} props.chats
- * @typedef Chat
- * @type {Object}
- * @property {number} id
- * @property {string} message
- * @property {string} username
- * @property {string} timestamp
- * @returns {React.JSX.Element}
- */
-export function Chats({ chats }) {
+export function Chats() {
+  const { chats } = useChatsContext();
+
   return (
     <section className="flex-1 h-full flex-col overflow-scroll">
       <div className="flex w-full">
         <div className="flex flex-col w-full">
-          {chats.map((chat) => (
-            <Chat key={chat.id} chat={chat} />
-          ))}
+          {chats.length ? (
+            chats.map((chat) => <Chat key={chat.id} chat={chat} />)
+          ) : (
+            <div className="p-4">No Chats</div>
+          )}
         </div>
       </div>
     </section>
