@@ -6,7 +6,7 @@ import jazzicon from "@metamask/jazzicon";
  * @param {Object} props
  * @param {number} [props.size = 10]
  * @param {string} props.username
- * @returns
+ * @returns {React.JSX.Element}
  */
 export default function Jazzicon({ size = 10, username }) {
   const divRef = useRef(null);

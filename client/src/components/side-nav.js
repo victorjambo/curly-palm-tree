@@ -1,5 +1,5 @@
 import { HashtagIcon } from "@heroicons/react/20/solid";
-import Jazzicon from "../utils/avatar";
+import Jazzicon from "./avatar";
 
 /**
  * Navbar component

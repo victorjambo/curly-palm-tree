@@ -1,4 +1,4 @@
-import Jazzicon from "../utils/avatar";
+import Jazzicon from "./avatar";
 
 /**
  * Single Chat component
