@@ -1,5 +1,5 @@
 import { HashtagIcon } from "@heroicons/react/20/solid";
-import Jazzicon, { jsNumberForAddress } from "react-jazzicon";
+import Jazzicon from "../utils/avatar";
 
 /**
  * Navbar component
@@ -43,10 +43,7 @@ export function SideNav({
       </div>
       <div className="flex">
         <div className="m-6 flex items-center">
-          <Jazzicon
-            diameter={42}
-            seed={jsNumberForAddress(currentUser.username)}
-          />
+          <Jazzicon size={35} username={currentUser.username} />
           <div className="flex flex-col pl-2">
             <span className="">{currentUser.username}</span>
             <span className="text-xs text-slate-400">current user</span>

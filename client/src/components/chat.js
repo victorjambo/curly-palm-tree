@@ -1,4 +1,5 @@
-import Jazzicon, { jsNumberForAddress } from "react-jazzicon";
+import Jazzicon from "../utils/avatar";
+
 /**
  * Single Chat component
  * @param {{
@@ -15,7 +16,7 @@ export function Chat({ chat }) {
   return (
     <div className="flex items-center p-4 hover:bg-slate-100">
       <div className="mr-3">
-        <Jazzicon diameter={37} seed={jsNumberForAddress(chat.username)} />
+        <Jazzicon size={35} username={chat.username} />
       </div>
       <div className="flex flex-col">
         <div className="flex items-end">
