@@ -5,6 +5,7 @@
  * @property {Channel[]} channels
  * @property {Channel} activeChannel
  * @property {(channel: Channel) => void} setActiveChannel
+ * @property {() => void} fetchChannels
  *
  * @typedef Channel
  * @type {Object}
@@ -13,7 +14,9 @@
  * @property {string} Channel.createdAt
  */
 
+import { useQuery } from "@apollo/client";
 import { createContext, useContext, useEffect, useState } from "react";
+import { GET_CHANNELS } from "../graphql/channels";
 
 /**
  * Create context.
@@ -32,15 +35,22 @@ const ChatsProvider = ({ children }) => {
   const [channels, setChannels] = useState([]);
   const [activeChannel, setActiveChannel] = useState(null);
 
+  const { loading, data, refetch: fetchChannels } = useQuery(GET_CHANNELS);
+
   useEffect(() => {
-    setChannels(CHANNELS);
-    setActiveChannel(CHANNELS[0]);
-  }, []);
+    if (loading) return;
+
+    const dataChannels = data.channels;
+    console.log("🚀 ~ file: chats.provider.js:44 ~ useEffect ~ dataChannels:", dataChannels)
+    setChannels(dataChannels);
+    setActiveChannel(dataChannels[0]);
+  }, [loading, JSON.stringify(data?.channels)]);
 
   return (
     <ChatsContext.Provider
       value={{
         channels,
+        fetchChannels,
         activeChannel,
         setActiveChannel,
       }}
@@ -51,8 +61,3 @@ const ChatsProvider = ({ children }) => {
 };
 
 export default ChatsProvider;
-
-const CHANNELS = [
-  { name: "general", id: 1, createdAt: "1699118599910" },
-  { name: "random", id: 2, createdAt: "1699118599910" },
-];

@@ -6,15 +6,18 @@ export const GET_CHANNELS = gql`
       name
       id
       createdAt
-      chats {
-        message
+    }
+  }
+`;
+
+export const CREATE_CHANNEL = gql`
+  mutation CreateChannel($name: String!) {
+    createChannel(name: $name) {
+      channel {
+        name
         id
-        createdAt
-        user {
-          username
-          id
-        }
       }
+      success
     }
   }
 `;

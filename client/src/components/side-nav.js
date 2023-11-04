@@ -1,15 +1,39 @@
-import { HashtagIcon } from "@heroicons/react/20/solid";
+import { HashtagIcon, PlusCircleIcon } from "@heroicons/react/20/solid";
 import Jazzicon from "./avatar";
 import { useChatsContext } from "../context/chats.provider";
 import { useAuthContext } from "../context/auth.provider";
+import { useEffect, useState } from "react";
+import { CREATE_CHANNEL } from "../graphql/channels";
+import { useMutation } from "@apollo/client";
 
 /**
  * Navbar component
  * @returns {React.JSX.Element}
  */
 export function SideNav() {
-  const { channels, activeChannel, setActiveChannel } = useChatsContext();
+  const { channels, activeChannel, setActiveChannel, fetchChannels } =
+    useChatsContext();
   const { user } = useAuthContext();
+
+  const [showInput, setShowInput] = useState(false);
+  const [input, setInput] = useState("");
+
+  const [createChannel, { data, loading }] = useMutation(CREATE_CHANNEL);
+
+  useEffect(() => {
+    if (loading) return;
+    if (data && data.createChannel && data.createChannel.success) {
+      fetchChannels?.();
+      setShowInput(false);
+      setInput("");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loading]);
+
+  const addChannel = (e) => {
+    e.preventDefault();
+    createChannel({ variables: { name: input } });
+  };
 
   return (
     <nav className="w-1/6 border-r flex flex-col">
@@ -17,7 +41,12 @@ export function SideNav() {
         <span className="px-4">Chat App</span>
       </div>
       <div className="flex-1 py-4">
-        <div className="text-lg px-4 mb-3">Channels</div>
+        <div className="text-lg px-4 mb-3 flex justify-between">
+          <span>Channels</span>
+          <button onClick={() => setShowInput(!showInput)}>
+            <PlusCircleIcon className="w-5 h-5 text-slate-500 hover:text-slate-600" />
+          </button>
+        </div>
         <ul>
           {channels.map((channel) => (
             <li
@@ -35,6 +64,20 @@ export function SideNav() {
               </button>
             </li>
           ))}
+          {showInput ? (
+            <li className="flex justify-center">
+              <form onSubmit={addChannel}>
+                <input
+                  type="text"
+                  className="py-2 border rounded-md pl-2"
+                  autoFocus
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                />
+                <input type="submit" className="hidden" />
+              </form>
+            </li>
+          ) : null}
         </ul>
       </div>
       <div className="flex">
