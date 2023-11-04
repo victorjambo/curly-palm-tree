@@ -1,9 +1,10 @@
 /**
- * Exclude items from object
- * <User, Key extends keyof User>
- * @param {{username: string; password: string; id: number}} user
- * @param {string[]} keys
- * @returns {Object}
+ * Exclude items from user object
+ * @param {Object} user
+ * @param {number} user.id
+ * @param {string} user.username
+ * @param {string} user.password
+ * @param {keyof User} keys
  */
 export function exclude(user, keys) {
   for (let key of keys) {

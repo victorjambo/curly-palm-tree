@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 /**
+ * Hash Password.
  * @param {string} password
  * @returns {Promise<string>}
  */
@@ -10,6 +11,7 @@ export async function hashedPassword(password) {
 }
 
 /**
+ * Generate Password.
  * @param {number} id
  * @returns {string}
  */

@@ -67,6 +67,9 @@ importers:
       apollo-server:
         specifier: ^3.12.1
         version: 3.12.1(graphql@16.8.1)
+      apollo-server-core:
+        specifier: ^3.12.1
+        version: 3.12.1(graphql@16.8.1)
       bcrypt:
         specifier: ^5.1.1
         version: 5.1.1

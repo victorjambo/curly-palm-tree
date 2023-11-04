@@ -1,22 +1,10 @@
-import jwt from "jsonwebtoken";
+import { getUserById } from "../accounts/operations.js";
+import { decodeToken } from "../utils/token.js";
 
-export const context = async ({ req, _res }) => {
-  if (req.headers?.authorization) {
-    const userId = validateToken(req.headers?.authorization);
-    return {
-      userId,
-    };
-  }
-};
+export const context = async ({ req }) => {
+  const token = req.headers.authorization || '';
 
-const validateToken = (authHeader) => {
-  let userId;
-  const token = authHeader.split(" ")[1];
-  const ACCESS_TOKEN = process.env.ACCESS_TOKEN_SECRET ?? "token";
-  jwt.verify(token, ACCESS_TOKEN, (err, decoded) => {
-    userId = decoded.userId;
-    next();
-  });
+  const userId = decodeToken(token);
 
-  return userId;
-};
+  return await getUserById(userId);
+}
