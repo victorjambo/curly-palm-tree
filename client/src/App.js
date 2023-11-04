@@ -5,7 +5,7 @@ import { useQuery } from "@apollo/client";
 import { useAppContext } from "./context/app.provider";
 import Toast from "./components/toast";
 import AuthModals from "./components/modals/auth.modal";
-import { USERS } from "./graphql/users";
+import { GET_USERS } from "./graphql/accounts";
 
 const channels = ["general", "random"];
 
@@ -13,7 +13,7 @@ function App() {
   const [activeChannel, setActiveChannel] = useState(channels[0]);
   const { currentUser } = useAppContext();
 
-  const { loading, error, data } = useQuery(USERS);
+  const { loading, error, data } = useQuery(GET_USERS);
 
   useEffect(() => {
     console.log({ loading, error, data });
