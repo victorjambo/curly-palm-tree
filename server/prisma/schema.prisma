@@ -11,7 +11,28 @@ datasource db {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
-  username String @unique
+  id       Int       @id @default(autoincrement())
+  username String    @unique
   password String
+  chats    Chat[]
+  channels Channel[]
+}
+
+model Channel {
+  id        Int      @id @default(autoincrement())
+  name      String
+  chats     Chat[]
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  createdAt DateTime @default(now())
+}
+
+model Chat {
+  id        Int      @id @default(autoincrement())
+  message   String
+  user      User?    @relation(fields: [userId], references: [id])
+  userId    Int
+  channel   Channel  @relation(fields: [channelId], references: [id])
+  channelId Int
+  createdAt DateTime @default(now())
 }

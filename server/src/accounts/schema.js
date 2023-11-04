@@ -10,14 +10,14 @@ export const typeDefs = gql`
     users: [User]
   }
 
-  type MutationResponse {
+  type AccountMutationResponse {
     success: Boolean!
     user: User
     accessToken: String!
   }
 
   type Mutation {
-    signup(username: String!, password: String!): MutationResponse!
-    login(username: String!, password: String!): MutationResponse!
+    signup(username: String!, password: String!): AccountMutationResponse!
+    login(username: String!, password: String!): AccountMutationResponse!
   }
 `;

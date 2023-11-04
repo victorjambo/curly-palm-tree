@@ -12,7 +12,7 @@ import { context } from "./context.js";
   });
 
   const { url } = await startStandaloneServer(server, {
-    context,
+    // context,
     listen: { port: 4000 },
   });
 
