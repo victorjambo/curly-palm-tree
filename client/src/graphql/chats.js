@@ -29,3 +29,12 @@ export const CREATE_CHAT = gql`
     }
   }
 `;
+
+export const NEW_CHAT_ADDED = gql`
+  subscription NewChatAdded($chatId: Int!) {
+    newChatAdded(chatID: $chatId) {
+      message
+      id
+    }
+  }
+`;

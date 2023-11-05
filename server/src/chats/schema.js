@@ -33,4 +33,8 @@ export const typeDefs = gql`
   type Mutation {
     createChat(message: String!, channelId: Int!): ChatMutationResponse!
   }
+
+  type Subscription {
+    postCreated: Chat
+  }
 `;

@@ -54,7 +54,6 @@ export async function createAccount(user) {
  * @returns {Promise<LoginResponse>}
  */
 export const loginAccount = async (user) => {
-  console.log("🚀 ~ file: operations.js:57 ~ loginAccount ~ user:", user)
   /** @type {import('@prisma/client').PrismaClient} */
   const prisma = getPrismaClient();
 

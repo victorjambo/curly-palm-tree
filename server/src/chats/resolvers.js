@@ -2,6 +2,9 @@ import { makeExecutableSchema } from "@graphql-tools/schema";
 import { typeDefs } from "./schema.js";
 import { getChats, createChat, getChatsByChannelId } from "./operations.js";
 import { withAuth } from "../utils/token.js";
+import { PubSub } from "graphql-subscriptions";
+
+const pubsub = new PubSub();
 
 const resolvers = {
   Query: {
@@ -17,11 +20,18 @@ const resolvers = {
         userId: context.userId,
       });
 
+      pubsub.publish("POST_CREATED", { postCreated: chat });
+
       return {
         chat,
         success: true,
       };
     }),
+  },
+  Subscription: {
+    postCreated: {
+      subscribe: () => pubsub.asyncIterator(["POST_CREATED"]),
+    },
   },
 };
 
