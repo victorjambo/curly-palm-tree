@@ -10,7 +10,8 @@ import { useAppContext } from "../context/app.provider";
  * @returns {React.JSX.Element}
  */
 export function SideNav() {
-  const { channels, activeChannel, setActiveChannel } = useAppContext();
+  const { channels, activeChannel, setActiveChannel, setChannels } =
+    useAppContext();
 
   const [showInput, setShowInput] = useState(false);
   const [input, setInput] = useState("");
@@ -22,6 +23,10 @@ export function SideNav() {
     if (data && data.createChannel && data.createChannel.success) {
       setShowInput(false);
       setInput("");
+      setChannels((prev) => {
+        data.createChannel.channel.chats = [];
+        return [...prev, data.createChannel.channel];
+      });
     }
   }, [loading]);
 
@@ -31,7 +36,7 @@ export function SideNav() {
   };
 
   return (
-    <nav className="w-1/6 border-r flex flex-col">
+    <nav className="w-1/3 lg:w-1/6 border-r flex flex-col">
       <div className="flex text-xl border-b py-4">
         <span className="px-4">Chat App</span>
       </div>
@@ -62,11 +67,11 @@ export function SideNav() {
               ))
             : null}
           {showInput ? (
-            <li className="flex justify-center">
+            <li className="flex justify-center w-full">
               <form onSubmit={addChannel}>
                 <input
                   type="text"
-                  className="py-2 border rounded-md pl-2"
+                  className="py-2 border rounded-md pl-2 w-full"
                   autoFocus
                   value={input}
                   onChange={(e) => setInput(e.target.value)}

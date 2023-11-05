@@ -2,9 +2,13 @@ import { useRef, useEffect, useState } from "react";
 import { useAppContext } from "../context/app.provider";
 import { Chat } from "./chat";
 import { useSmoothScroll } from "../hooks/useSmoothScroll";
+import { useSubscription } from "@apollo/client";
+import { POST_CREATED } from "../graphql/chats";
+import { updateChatsInChannel, findChatsInChannels } from "../utils/utils";
 
 export function Chats() {
-  const { channels, activeChannel } = useAppContext();
+  const { channels, activeChannel, setChannels } = useAppContext();
+  const { data, loading } = useSubscription(POST_CREATED);
 
   const [chats, setChats] = useState([]);
 
@@ -12,13 +16,19 @@ export function Chats() {
   useSmoothScroll({ len: chats.length, ref });
 
   useEffect(() => {
-    const channel = channels.find((channel) => channel.id === activeChannel.id);
-    if (channel) {
-      setChats(channel.chats);
-    } else {
-      setChats([]);
-    }
-  }, [activeChannel.id, channels]);
+    if (loading || !data?.postCreated) return;
+    const updatedChannels = updateChatsInChannel(
+      channels,
+      data.postCreated.channel.id,
+      data.postCreated
+    );
+    setChannels(updatedChannels);
+  }, [loading, JSON.stringify(data)]);
+
+  useEffect(() => {
+    if (!channels.length) return;
+    setChats(findChatsInChannels(channels, activeChannel.id));
+  }, [activeChannel, channels]);
 
   return (
     <section className="flex-1 h-full flex-col overflow-scroll">

@@ -25,6 +25,16 @@ export const CREATE_CHANNEL = gql`
       channel {
         name
         id
+        createdAt
+        chats {
+          createdAt
+          id
+          message
+          user {
+            username
+            id
+          }
+        }
       }
       success
     }

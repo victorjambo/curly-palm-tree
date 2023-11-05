@@ -8,7 +8,7 @@ import { TextArea } from "./text-area";
  */
 export function MainChat() {
   return (
-    <div className="w-5/6 h-full flex flex-col">
+    <div className="w-2/3 lg:w-5/6 h-full flex flex-col">
       <Header />
       <Chats />
       <TextArea />

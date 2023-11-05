@@ -10,6 +10,5 @@ export const useSetUserFromStorage = ({
       setCurrentUser(JSON.parse(_user));
       setIsAuthenticated(true);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 };

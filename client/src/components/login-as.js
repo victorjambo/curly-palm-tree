@@ -4,11 +4,15 @@ import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import { useMutation, useQuery } from "@apollo/client";
 import { GET_USERS, LOGIN_AS } from "../graphql/accounts";
 import { useAppContext } from "../context/app.provider";
+import { useNavigate } from "react-router-dom";
+
 
 function LoginAs() {
   const { data: usersData } = useQuery(GET_USERS);
   const { setIsAuthenticated, setCurrentUser, handleToast } = useAppContext();
   const [loginAs, { data, loading, error }] = useMutation(LOGIN_AS);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (loading) return;
@@ -20,6 +24,7 @@ function LoginAs() {
       localStorage.setItem("chat-user", JSON.stringify(currentUser));
       setIsAuthenticated?.(true);
       setCurrentUser?.(currentUser);
+      navigate("/")
     }
 
     if (error) {

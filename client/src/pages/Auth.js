@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useAppContext } from "../context/app.provider";
 import { useMutation } from "@apollo/client";
 import { LOGIN, SIGNUP } from "../graphql/accounts";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import LoginAs from "../components/login-as";
 
 const AuthType = {
@@ -23,8 +23,8 @@ function Auth() {
   });
 
   // hooks
-  const { setIsAuthenticated, setCurrentUser, isAuthenticated, handleToast } =
-    useAppContext();
+  const { setIsAuthenticated, setCurrentUser, handleToast } = useAppContext();
+  const navigate = useNavigate();
 
   // Apollo Client services
   const [login, { data: loginData, loading: loginLoading, error: loginError }] =
@@ -46,8 +46,6 @@ function Auth() {
       handleToast("Error logging in", "WARN");
       console.warn(loginError);
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loginLoading]);
 
   useEffect(() => {
@@ -61,8 +59,6 @@ function Auth() {
       handleToast("Error signing up", "WARN");
       console.warn(signupError);
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [signupLoading]);
 
   useEffect(() => {
@@ -82,10 +78,11 @@ function Auth() {
       authType === AuthType.Login ? loginData.login : signupData.signup;
 
     handleToast?.("Successfully logged in", "SUCCESS");
-    localStorage.setItem("chat.token", data.accessToken);
-    localStorage.setItem("chat.user", JSON.stringify(data.user));
+    localStorage.setItem("chat-token", data.accessToken);
+    localStorage.setItem("chat-user", JSON.stringify(data.user));
     setIsAuthenticated?.(true);
     setCurrentUser?.(data.user);
+    navigate("/");
   };
 
   const handleAuth = async () => {
@@ -237,7 +234,6 @@ function Auth() {
           </div>
         </div>
       </div>
-      {isAuthenticated ? <Navigate to="/" replace={true} /> : null}
     </>
   );
 }

@@ -31,7 +31,7 @@ const splitLink = split(
 );
 
 const authLink = setContext((_, { headers }) => {
-  const token = localStorage.getItem("chat.token");
+  const token = localStorage.getItem("chat-token");
   return {
     headers: {
       ...headers,

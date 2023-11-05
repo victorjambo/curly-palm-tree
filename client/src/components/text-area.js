@@ -20,7 +20,6 @@ export function TextArea() {
     if (data && data.createChat.success) {
       setValue("");
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading]);
 
   const handleSendChat = () => {

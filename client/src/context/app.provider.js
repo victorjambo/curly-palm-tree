@@ -82,7 +82,10 @@ const AppProvider = ({ children }) => {
         setActiveChannel,
         currentUser,
         isAuthenticated,
-        setIsAuthenticated
+        setIsAuthenticated,
+        setCurrentUser,
+        setChannels,
+        setShowToast
       }}
     >
       {children}

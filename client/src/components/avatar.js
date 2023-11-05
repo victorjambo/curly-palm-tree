@@ -19,7 +19,6 @@ export default function Jazzicon({ size = 10, username }) {
     if (!divRef || !divRef.current) return null;
 
     divRef.current.appendChild(result);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return <div className="flex" ref={divRef} />;

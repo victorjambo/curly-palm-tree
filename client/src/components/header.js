@@ -1,5 +1,6 @@
 import { HashtagIcon } from "@heroicons/react/20/solid";
 import { useAppContext } from "../context/app.provider";
+import { useNavigate } from "react-router-dom";
 
 /**
  * Header component
@@ -9,10 +10,13 @@ function Header() {
   const { activeChannel, isAuthenticated, setIsAuthenticated, setCurrentUser } =
     useAppContext();
 
+  const navigate = useNavigate();
+
   const logout = () => {
     localStorage.clear();
     setCurrentUser(null);
     setIsAuthenticated(false);
+    navigate("/login")
   };
 
   return (
