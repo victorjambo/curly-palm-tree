@@ -28,6 +28,7 @@ export const useFetchChats = (channelId) => {
         return [...prev, wsData.postCreated];
       });
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(wsData), wsLoading]);
 
   const {

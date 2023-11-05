@@ -1,13 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { ApolloProvider } from "@apollo/client";
 import AppProvider from "./context/app.provider";
 import AuthProvider from "./context/auth.provider";
 import { client } from "./utils/apollo-client";
 import ChatsProvider from "./context/chats.provider";
+import { RouterProvider } from "react-router-dom";
+import { routers } from "./pages/routes";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -16,7 +17,7 @@ root.render(
       <AuthProvider>
         <AppProvider>
           <ChatsProvider>
-            <App />
+            <RouterProvider router={routers} />
           </ChatsProvider>
         </AppProvider>
       </AuthProvider>

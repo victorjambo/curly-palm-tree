@@ -1,4 +1,3 @@
-import { useSubscription } from "@apollo/client";
 import { useChatsContext } from "../context/chats.provider";
 import { Chat } from "./chat";
 
