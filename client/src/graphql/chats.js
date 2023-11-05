@@ -30,11 +30,20 @@ export const CREATE_CHAT = gql`
   }
 `;
 
-export const NEW_CHAT_ADDED = gql`
-  subscription NewChatAdded($chatId: Int!) {
-    newChatAdded(chatID: $chatId) {
-      message
+export const POST_CREATED = gql`
+  subscription PostCreated {
+    postCreated {
+      createdAt
       id
+      message
+      user {
+        username
+        id
+      }
+      channel {
+        name
+        id
+      }
     }
   }
 `;

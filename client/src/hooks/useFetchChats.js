@@ -7,9 +7,9 @@
  * @property {string} Chat.message
  * @property {{username: string; id: number}} Chat.user
  */
-import { useQuery } from "@apollo/client";
+import { useQuery, useSubscription } from "@apollo/client";
 import { useEffect, useState } from "react";
-import { GET_CHATS_BY_CHANNEL_ID } from "../graphql/chats";
+import { GET_CHATS_BY_CHANNEL_ID, POST_CREATED } from "../graphql/chats";
 
 /**
  * Fetch chats for a given channel
@@ -18,6 +18,17 @@ import { GET_CHATS_BY_CHANNEL_ID } from "../graphql/chats";
  */
 export const useFetchChats = (channelId) => {
   const [chats, setChats] = useState([]);
+
+  const { data: wsData, loading: wsLoading } = useSubscription(POST_CREATED);
+
+  useEffect(() => {
+    if (wsLoading) return;
+    if (wsData?.postCreated) {
+      setChats((prev) => {
+        return [...prev, wsData.postCreated];
+      });
+    }
+  }, [JSON.stringify(wsData), wsLoading]);
 
   const {
     data,

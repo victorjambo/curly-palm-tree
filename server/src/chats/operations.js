@@ -38,6 +38,21 @@ export async function createChat(data) {
 
   return await prisma.chat.create({
     data,
+    include: {
+      user: {
+        select: {
+          username: true,
+          id: true,
+        },
+      },
+      channel: {
+        select: {
+          id: true,
+          name: true,
+          createdAt: true,
+        },
+      },
+    },
   });
 }
 

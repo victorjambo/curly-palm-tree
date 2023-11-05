@@ -19,12 +19,12 @@ export function Chat({ chat }) {
   return (
     <div className="flex items-center p-4 hover:bg-slate-100">
       <div className="mr-3">
-        <Jazzicon size={35} username={chat.user.username} />
+        <Jazzicon size={35} username={chat.user?.username} />
       </div>
       <div className="flex flex-col">
         <div className="flex items-end">
           <span className="font-bold text-md mr-2 font-sans">
-            @{chat.user.username}
+            @{chat.user?.username}
           </span>
           <span className="text-slate-400 text-sm font-light">{moment(Number(chat.createdAt)).fromNow()}</span>
         </div>

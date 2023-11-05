@@ -7,7 +7,7 @@ import { createClient } from 'graphql-ws';
 
 
 
-const WS_LINK = "ws://localhost:4000/subscriptions";
+const WS_LINK = "ws://localhost:4000/graphql";
 const HTTP_LINK = "http://localhost:4000/graphql";
 
 const wsLink = new GraphQLWsLink(createClient({

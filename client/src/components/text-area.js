@@ -11,18 +11,13 @@ import { CREATE_CHAT } from "../graphql/chats";
 export function TextArea() {
   const [value, setValue] = useState("");
 
-  const { activeChannel, fetchChats } = useChatsContext();
+  const { activeChannel } = useChatsContext();
 
   const [createChat, { data, loading }] = useMutation(CREATE_CHAT);
 
   useEffect(() => {
     if (loading) return;
     if (data && data.createChat.success) {
-      fetchChats?.({
-        variables: {
-          channelId: activeChannel.id,
-        },
-      });
       setValue("");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
