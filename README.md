@@ -31,3 +31,13 @@ If you wish to develop using all of the packages locally you can perform the fol
 3. Database
     * Postgres
     * Prisma (ORM)
+
+### Troubleshooting
+
+1. Create .env to fix the error below
+
+```bash
+error: Environment variable not found: DATABASE_URL.
+```
+
+2. 
