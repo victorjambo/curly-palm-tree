@@ -81,13 +81,17 @@ export function SideNav() {
         </ul>
       </div>
       <div className="flex">
-        <div className="m-6 flex items-center">
-          <Jazzicon size={35} username={user.name} />
-          <div className="flex flex-col pl-2">
-            <span className="">{user.name}</span>
-            <span className="text-xs text-slate-400">current user</span>
+        {user ? (
+          <div className="m-6 flex items-center">
+            <Jazzicon size={35} username={user.username} />
+            <div className="flex flex-col pl-2">
+              <span className="">{user.username}</span>
+              <span className="text-xs text-slate-400">current user</span>
+            </div>
           </div>
-        </div>
+        ) : (
+          <div />
+        )}
       </div>
     </nav>
   );

@@ -12,15 +12,15 @@
  */
 
 import bcrypt from "bcrypt";
-import { GraphQLError } from 'graphql';
+import { GraphQLError } from "graphql";
 import { getPrismaClient } from "../prisma.js";
 import { exclude } from "../utils/exclude.js";
 import { hashedPassword } from "./auth.js";
 
-
 export async function getAllUsers() {
   /** @type {import('@prisma/client').PrismaClient} */
   const prisma = getPrismaClient();
+
   return await prisma.user.findMany();
 }
 
@@ -54,6 +54,7 @@ export async function createAccount(user) {
  * @returns {Promise<LoginResponse>}
  */
 export const loginAccount = async (user) => {
+  console.log("🚀 ~ file: operations.js:57 ~ loginAccount ~ user:", user)
   /** @type {import('@prisma/client').PrismaClient} */
   const prisma = getPrismaClient();
 
@@ -62,18 +63,18 @@ export const loginAccount = async (user) => {
   });
 
   if (!foundUser) {
-    throw new GraphQLError('User not found', {
+    throw new GraphQLError("User not found", {
       extensions: {
-        code: 'NOT_FOUND',
+        code: "NOT_FOUND",
       },
     });
   }
 
   const isMatching = await bcrypt.compare(user.password, foundUser.password);
   if (!isMatching) {
-    throw new GraphQLError('Password incorrect', {
+    throw new GraphQLError("Password incorrect", {
       extensions: {
-        code: 'AUTH_FAILED',
+        code: "AUTH_FAILED",
       },
     });
   }
@@ -92,9 +93,9 @@ export async function getUserById(id) {
 
   const user = await prisma.user.findUnique({ where: { id } });
   if (!user) {
-    throw new GraphQLError('User not found', {
+    throw new GraphQLError("User not found", {
       extensions: {
-        code: 'NOT_FOUND',
+        code: "NOT_FOUND",
       },
     });
   }

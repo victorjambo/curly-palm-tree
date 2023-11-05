@@ -1,7 +1,6 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import React, { Fragment } from "react";
-import Toast from "../toast";
 
 /**
  * Reusable Modal component.
@@ -24,7 +23,7 @@ const Modal = ({
     <Transition.Root show={show} as={Fragment}>
       <Dialog
         className="fixed z-40 w-screen h-screen overflow-y-scroll no-scroll-bar justify-center align-middle py-auto inset-0 text-center"
-        onClose={closeModal}
+        onClose={() => null}
         open={show}
       >
         <div className="flex items-center h-screen my-auto justify-center text-center text-white sm:px-4 sm:block sm:p-0">
@@ -87,7 +86,6 @@ const Modal = ({
             </div>
           </Transition.Child>
         </div>
-        <Toast />
       </Dialog>
     </Transition.Root>
   );

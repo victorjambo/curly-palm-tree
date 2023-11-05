@@ -1,123 +1,82 @@
 import React, { useEffect, useState } from "react";
 import Modal from "./modal";
 import { AuthType, useAuthContext } from "../../context/auth.provider";
-// import { useAppContext } from "../../context/app.provider";
-import { validateAuth } from "../../utils/validator";
+import { useMutation } from "@apollo/client";
+import { LOGIN } from "../../graphql/accounts";
+import { useAppContext } from "../../context/app.provider";
 
 const AuthModals = () => {
-  const { showModal, setShowModal, authType, /* setIsAuth, setUser, setToken  */} =
+  const { showModal, setShowModal, authType, setIsAuth, setUser } =
     useAuthContext();
-
-  // const { handleToast } = useAppContext();
+  const { handleToast } = useAppContext();
 
   const [disabled, setDisabled] = useState(false);
   const [errors, setErrors] = useState({
-    email: "",
-    name: "",
+    username: "",
     password: "",
     confirmPassword: "",
   });
 
-  const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("mutai");
+  const [password, setPassword] = useState("password");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const [loading, setLoading] = useState(false);
+  const [login, { data, loading, error }] = useMutation(LOGIN);
+
+  useEffect(() => {
+    if (loading) return;
+    if (data?.login?.success) {
+      const currentUser = data.login.user;
+      handleToast?.("Successfully logged in", "SUCCESS");
+      localStorage.setItem("chat.token", data.login.accessToken);
+      localStorage.setItem("chat.user", JSON.stringify(currentUser));
+      setIsAuth?.(true);
+      setShowModal?.(false);
+      setUser?.(currentUser);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loading]);
+
+  useEffect(() => {
+    if (loading) return;
+    if (error) {
+      handleToast("Error logging in", "WARN");
+      console.warn(error);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [error, loading]);
 
   useEffect(() => {
     if (
       (authType === AuthType.Signup &&
-        (!email || !password || !confirmPassword || !name)) ||
-      (authType === AuthType.Login && (!email || !password))
+        (!password || !confirmPassword || !username)) ||
+      (authType === AuthType.Login && (!password || !username))
     ) {
       setDisabled(true);
     } else {
       setDisabled(false);
     }
-  }, [authType, confirmPassword, email, name, password]);
+  }, [authType, confirmPassword, password, username]);
 
-  const handleAuth = () => {
-    setLoading(true);
-    if (authType === AuthType.Signup) {
-      const { isValid, errors: _errors } = validateAuth(
-        email,
-        name,
+  const handleAuth = async () => {
+    if (authType === AuthType.Login) {
+      const variables = {
+        username,
         password,
-        confirmPassword
-      );
-      setErrors(_errors);
-      if (!isValid) {
-        setLoading(false);
-        return;
-      }
+      };
+      await login({
+        variables,
+      });
     }
-    submit();
   };
-
-  const submit = async () => {
-    // let url = "/auth/login";
-    // let data = {
-    //   email,
-    //   password,
-    // };
-    // if (authType === AuthType.Signup) {
-    //   url = "/auth/signup";
-    //   data = {
-    //     email,
-    //     password,
-    //     name,
-    //   };
-    // }
-
-    // await http
-    //   .post(url, data)
-    //   .then((res) => res.data)
-    //   .then((res) => handleSuccess(res))
-    //   .catch((err) => handleErrors(err));
-  };
-
-  // const handleSuccess = (res) => {
-  //   handleToast?.("Successfully logged in", "SUCCESS");
-  //   const user = {
-  //     id: res.id,
-  //     email: res.email,
-  //     name: res.name,
-  //   };
-  //   setIsAuth?.(true);
-  //   setShowModal?.(false);
-  //   setLoading(false);
-  //   setUser?.(user);
-  //   localStorage.setItem("token", JSON.stringify(res.accessToken));
-  //   localStorage.setItem("user", JSON.stringify(user));
-  //   setToken?.(res.accessToken);
-  //   // http.interceptors.request.use(
-  //   //   (config) => {
-  //   //     config.headers["Authorization"] = `Bearer ${res.accessToken}`;
-  //   //     return config;
-  //   //   },
-  //   //   (error) => {
-  //   //     return Promise.reject(error);
-  //   //   }
-  //   // );
-  // };
-
-  // const handleErrors = (error) => {
-  //   setLoading(false);
-  //   // TODO this is a generic error. we should show what actually went wrong
-  //   handleToast?.("Error logging in", "WARN");
-  //   console.error(error);
-  // };
 
   const closeModal = () => {
     setShowModal?.(false);
-    setName("");
-    setEmail("");
+    setUsername("");
     setPassword("");
     setConfirmPassword("");
     setErrors({
-      name: "",
-      email: "",
+      username: "",
       password: "",
       confirmPassword: "",
     });
@@ -125,55 +84,34 @@ const AuthModals = () => {
 
   return (
     <Modal
-      show={!!showModal}
+      show={showModal}
       closeModal={closeModal}
       title={authType}
       width="w-96"
     >
       <div className="flex flex-col w-full space-y-4 p-1">
-        {authType === AuthType.Signup && (
-          <div className="flex flex-col w-full">
-            <label htmlFor="title">Name</label>
-            <div className="col-span-3">
-              <input
-                id="name"
-                name="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Name..."
-                className={`w-full px-4 py-2 border bg-transparent focus-visible:outline-none focus:ring-1 focus:ring-[#2563eb] rounded-md ${
-                  errors.name ? "border-[#fe5c4c]" : "border-[#3e3f4b]"
-                }`}
-              />
-              {errors.name && (
-                <span className="text-[#fe5c4c] text-xs">{errors.name}</span>
-              )}
-            </div>
-          </div>
-        )}
-
         <div className="flex flex-col w-full">
-          <label htmlFor="title">Email</label>
+          <label htmlFor="username">Username</label>
           <div className="col-span-3">
             <input
-              id="email"
-              name="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="example@admin.io"
+              id="username"
+              name="name"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Username..."
+              type="text"
               className={`w-full px-4 py-2 border bg-transparent focus-visible:outline-none focus:ring-1 focus:ring-[#2563eb] rounded-md ${
-                errors.email ? "border-[#fe5c4c]" : "border-[#3e3f4b]"
+                errors.username ? "border-[#fe5c4c]" : "border-[#3e3f4b]"
               }`}
             />
-            {errors.email && (
-              <span className="text-[#fe5c4c] text-xs">{errors.email}</span>
-            )}
+            {errors.username ? (
+              <span className="text-[#fe5c4c] text-xs">{errors.username}</span>
+            ) : null}
           </div>
         </div>
 
         <div className="flex flex-col w-full">
-          <label htmlFor="title">Password</label>
+          <label htmlFor="password">Password</label>
           <div className="col-span-3">
             <input
               id="password"
@@ -186,15 +124,15 @@ const AuthModals = () => {
                 errors.password ? "border-[#fe5c4c]" : "border-[#3e3f4b]"
               }`}
             />
-            {errors.password && (
+            {errors.password ? (
               <span className="text-[#fe5c4c] text-xs">{errors.password}</span>
-            )}
+            ) : null}
           </div>
         </div>
 
-        {authType === AuthType.Signup && (
+        {authType === AuthType.Signup ? (
           <div className="flex flex-col w-full">
-            <label htmlFor="title">Confirm Password</label>
+            <label htmlFor="confirm-password">Confirm Password</label>
             <div className="col-span-3">
               <input
                 id="confirm-password"
@@ -209,26 +147,26 @@ const AuthModals = () => {
                     : "border-[#3e3f4b]"
                 }`}
               />
-              {errors.confirmPassword && (
+              {errors.confirmPassword ? (
                 <span className="text-[#fe5c4c] text-xs">
                   {errors.confirmPassword}
                 </span>
-              )}
+              ) : null}
             </div>
           </div>
-        )}
+        ) : null}
 
-        <div className="self-center w-2/3 pt-10">
+        <div className="flex flex-col w-full pt-10">
           <button
             className={`transition text-sm px-5 py-2 rounded-lg border flex items-center justify-center text-center w-full ${
               disabled || loading
                 ? "border-[#3e3f4b] bg-[#3e3f4b] text-[#6a6d7c] cursor-not-allowed"
                 : "cursor-pointer border-[#4f87f6] bg-[#4f87f6] hover:border-[#1859f1] hover:bg-[#1859f1] text-white"
             }`}
-            onClick={handleAuth}
             disabled={disabled || loading}
+            onClick={handleAuth}
           >
-            {loading && (
+            {loading ? (
               <svg
                 aria-hidden="true"
                 role="status"
@@ -246,7 +184,7 @@ const AuthModals = () => {
                   fill="currentColor"
                 />
               </svg>
-            )}
+            ) : null}
             <span>{loading ? "Loading" : authType}</span>
           </button>
         </div>

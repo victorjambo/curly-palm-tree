@@ -15,7 +15,7 @@ export function MainChat() {
       <header className="flex w-full py-4 border-b bg-white">
         <div className="px-4 text-lg flex flex-row items-center">
           <HashtagIcon className="w-4 h-4" />
-          <span>{activeChannel?.name}</span>
+          <span>{activeChannel?.name ?? 'Channel'}</span>
         </div>
       </header>
       <Chats />

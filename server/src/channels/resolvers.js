@@ -1,26 +1,29 @@
 import { makeExecutableSchema } from "@graphql-tools/schema";
 import { typeDefs } from "./schema.js";
 import { createChannel, getChannels } from "./operations.js";
+import { withAuth } from "../utils/token.js";
 
 const resolvers = {
   Query: {
-    channels: getChannels,
+    channels: withAuth(getChannels),
   },
   Mutation: {
-    createChannel: async (_parent, args, _context, _info) => {
+    createChannel: withAuth(async (_parent, args, context, _info) => {
       const channel = await createChannel({
         ...args,
-        userId: 1
+        userId: context.userId,
       });
 
       return {
         channel,
         success: true,
       };
-    }
-  }
+    }),
+  },
 };
 
-const channelsSchema = { schema: makeExecutableSchema({ typeDefs, resolvers }) };
+const channelsSchema = {
+  schema: makeExecutableSchema({ typeDefs, resolvers }),
+};
 
 export default channelsSchema;

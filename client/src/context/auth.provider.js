@@ -7,13 +7,13 @@
  * @property {(arg: boolean) => void} setShowModal
  * @property {string} token
  * @property {(token: string) =>  void} setToken
- * @property {{ id: number; name: string }} user
- * @property {(arg: { id: number; name: string }) => void} setUser
- * @property {{Login: "Login", Signup: "Signup"}} authType
- * @property {(arg: {Login: "Login", Signup: "Signup"}) => void} setAuthType
+ * @property {{ id: number; username: string }} user
+ * @property {(arg: { id: number; username: string }) => void} setUser
+ * @property {"Login" | "Signup"} authType
+ * @property {(arg: "Login" | "Signup") => void} setAuthType
  */
 
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 
 /**
  * Create context.
@@ -34,21 +34,17 @@ const AuthProvider = ({ children }) => {
 
   const [token, setToken] = useState("");
   const [authType, setAuthType] = useState(AuthType.Login);
-  const [user, setUser] = useState({
-    id: 1,
-    name: "Jack",
-  });
+  const [user, setUser] = useState(null);
 
-  // useEffect(() => {
-  //   const _token = localStorage.getItem("token");
-  //   const _user = localStorage.getItem("user");
-  //   if (_user) {
-  //     setUser(JSON.parse(_user));
-  //     setIsAuth(true);
-  //     setToken(_token?.replaceAll('"', "") || "");
-  //   }
-  //   // Interceptors for apollo
-  // }, []);
+  useEffect(() => {
+    const _token = localStorage.getItem("chat.token");
+    const _user = localStorage.getItem("chat.user");
+    if (_user) {
+      setUser(JSON.parse(_user));
+      setIsAuth(true);
+      setToken(_token?.replaceAll('"', "") || "");
+    }
+  }, []);
 
   return (
     <AuthContext.Provider

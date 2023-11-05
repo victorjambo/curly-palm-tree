@@ -1,10 +1,14 @@
-import { getUserById } from "../accounts/operations.js";
 import { decodeToken } from "../utils/token.js";
 
 export const context = async ({ req }) => {
-  const token = req.headers.authorization || '';
+  const authorization = req?.headers?.authorization || "";
+  let userId;
+  let isAuthenticated = false;
+  if (authorization) {
+    const token = authorization.replace("Bearer ", "");
+    userId = decodeToken(token);
+    if (userId) isAuthenticated = true;
+  }
 
-  const userId = decodeToken(token);
-
-  return await getUserById(userId);
-}
+  return { isAuthenticated, userId };
+};
