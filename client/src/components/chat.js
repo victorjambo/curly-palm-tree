@@ -26,10 +26,19 @@ export function Chat({ chat }) {
           <span className="font-bold text-md mr-2 font-sans">
             @{chat.user?.username}
           </span>
-          <span className="text-slate-400 text-sm font-light">{moment(Number(chat.createdAt)).fromNow()}</span>
+          <span className="text-slate-400 text-sm font-light">
+            {moment(Number(chat.createdAt)).fromNow()}
+          </span>
         </div>
         <p className="font-light text-md text-grey-darkest pt-1">
-          {chat.message}
+          <span
+            dangerouslySetInnerHTML={{
+              __html: chat.message.replace(
+                /@(\w+)/,
+                '<span style="color: #4f87f6">@$1</span>'
+              ),
+            }}
+          />
         </p>
       </div>
     </div>

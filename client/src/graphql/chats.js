@@ -56,3 +56,15 @@ export const POST_CREATED = gql`
     }
   }
 `;
+
+export const MENTION = gql`
+  subscription Mention {
+    mention {
+      channel
+      user {
+        username
+        id
+      }
+    }
+  }
+`;

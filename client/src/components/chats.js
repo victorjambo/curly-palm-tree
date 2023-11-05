@@ -3,12 +3,14 @@ import { useAppContext } from "../context/app.provider";
 import { Chat } from "./chat";
 import { useSmoothScroll } from "../hooks/useSmoothScroll";
 import { useSubscription } from "@apollo/client";
-import { POST_CREATED } from "../graphql/chats";
+import { MENTION, POST_CREATED } from "../graphql/chats";
 import { updateChatsInChannel, findChatsInChannels } from "../utils/utils";
 
 export function Chats() {
-  const { channels, activeChannel, setChannels } = useAppContext();
+  const { channels, activeChannel, setChannels, handleToast, currentUser } =
+    useAppContext();
   const { data, loading } = useSubscription(POST_CREATED);
+  const { data: mention, loading: mentionLoading } = useSubscription(MENTION);
 
   const [chats, setChats] = useState([]);
 
@@ -29,6 +31,18 @@ export function Chats() {
     if (!channels.length) return;
     setChats(findChatsInChannels(channels, activeChannel.id));
   }, [activeChannel, channels]);
+
+  useEffect(() => {
+    console.log("🚀 ~ mention:", mention)
+    if (mentionLoading) return;
+
+    if (mention?.mention?.user?.id === currentUser?.id) {
+      handleToast?.(
+        `You have been mentioned in #${mention?.mention.channel} channel`,
+        "SUCCESS"
+      );
+    }
+  }, [mentionLoading, JSON.stringify(mention)]);
 
   return (
     <section className="flex-1 h-full flex-col overflow-scroll">

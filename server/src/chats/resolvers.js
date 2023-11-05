@@ -15,12 +15,16 @@ const resolvers = {
   },
   Mutation: {
     createChat: withAuth(async (_parent, args, context, _info) => {
-      const chat = await createChat({
+      const response = await createChat({
         ...args,
         userId: context.userId,
       });
 
-      pubsub.publish("POST_CREATED", { postCreated: chat });
+      pubsub.publish("POST_CREATED", { postCreated: response.chat });
+
+      if (response.mention) {
+        pubsub.publish("MENTION", { mention: response.mention });
+      }
 
       /**
        * // TODO
@@ -33,7 +37,7 @@ const resolvers = {
        */
 
       return {
-        chat,
+        chat: response.chat,
         success: true,
       };
     }),
@@ -41,6 +45,9 @@ const resolvers = {
   Subscription: {
     postCreated: {
       subscribe: () => pubsub.asyncIterator(["POST_CREATED"]),
+    },
+    mention: {
+      subscribe: () => pubsub.asyncIterator(["MENTION"]),
     },
   },
 };

@@ -1,4 +1,5 @@
 import { getPrismaClient } from "../prisma.js";
+import { extractUsername } from "../utils/utils.js";
 
 export async function getChats() {
   /** @type {import('@prisma/client').PrismaClient} */
@@ -36,7 +37,7 @@ export async function createChat(data) {
   /** @type {import('@prisma/client').PrismaClient} */
   const prisma = getPrismaClient();
 
-  return await prisma.chat.create({
+  const chat = await prisma.chat.create({
     data,
     include: {
       user: {
@@ -54,6 +55,23 @@ export async function createChat(data) {
       },
     },
   });
+
+  let mention = null;
+  if (chat.message.includes("@")) {
+    const username = extractUsername(chat.message);
+    const user = await prisma.user.findUnique({ where: { username } });
+    if (user) {
+      mention = {
+        user: { id: user.id, username: user.username },
+        channel: chat.channel.name,
+      };
+    }
+  }
+
+  return {
+    chat,
+    mention,
+  };
 }
 
 export async function getChatsByChannelId(channelId) {
