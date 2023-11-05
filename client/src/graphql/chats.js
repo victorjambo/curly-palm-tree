@@ -65,6 +65,7 @@ export const MENTION = gql`
         username
         id
       }
+      from
     }
   }
 `;

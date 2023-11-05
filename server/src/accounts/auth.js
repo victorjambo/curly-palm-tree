@@ -18,6 +18,6 @@ export async function hashedPassword(password) {
 export function generateTokens(id) {
   const ACCESS_TOKEN = process.env.ACCESS_TOKEN_SECRET ?? "token";
   return jwt.sign({ userId: id }, ACCESS_TOKEN, {
-    expiresIn: "9000000",
+    expiresIn: "9000000000",
   });
 }

@@ -64,6 +64,7 @@ export async function createChat(data) {
       mention = {
         user: { id: user.id, username: user.username },
         channel: chat.channel.name,
+        from: data.userId,
       };
     }
   }
