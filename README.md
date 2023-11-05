@@ -6,6 +6,8 @@ If you wish to develop using all of the packages locally you can perform the fol
 
 ### Locally
 
+> This project uses [pnpm](https://pnpm.io/installation) to manage the workspace. Ensure you have [pnpm](https://pnpm.io/installation) installed locally before proceeding.
+
 1. Install packages with `pnpm install` from the root folder.
 2. Setup postgres:
     * cd into server folder and make a copy of [.env.template](./server/.env.template) and rename it to `.env`.

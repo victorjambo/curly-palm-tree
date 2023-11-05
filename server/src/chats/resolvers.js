@@ -26,16 +26,6 @@ const resolvers = {
         pubsub.publish("MENTION", { mention: response.mention });
       }
 
-      /**
-       * // TODO
-       * 1. check if chat.message includes @
-       * 2. run process in a worker
-       * 3. check if @username is in user database
-       * 4. if true => pubsub "MENTION" to @username
-       * 5. question is how to publish event to specific user
-       * 6. on the browser highlight mentions
-       */
-
       return {
         chat: response.chat,
         success: true,
