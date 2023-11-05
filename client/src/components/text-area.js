@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { PaperAirplaneIcon } from "@heroicons/react/24/solid";
-import { useChatsContext } from "../context/chats.provider";
 import { useMutation } from "@apollo/client";
 import { CREATE_CHAT } from "../graphql/chats";
+import { useAppContext } from "../context/app.provider";
 
 /**
  * Input field component
@@ -11,7 +11,7 @@ import { CREATE_CHAT } from "../graphql/chats";
 export function TextArea() {
   const [value, setValue] = useState("");
 
-  const { activeChannel } = useChatsContext();
+  const { activeChannel } = useAppContext();
 
   const [createChat, { data, loading }] = useMutation(CREATE_CHAT);
 

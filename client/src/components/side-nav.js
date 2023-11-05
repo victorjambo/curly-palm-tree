@@ -1,17 +1,16 @@
 import { HashtagIcon, PlusCircleIcon } from "@heroicons/react/20/solid";
-import { useChatsContext } from "../context/chats.provider";
 import { useEffect, useState } from "react";
 import { CREATE_CHANNEL } from "../graphql/channels";
 import { useMutation } from "@apollo/client";
 import CurrentUser from "./current-user";
+import { useAppContext } from "../context/app.provider";
 
 /**
  * Navbar component
  * @returns {React.JSX.Element}
  */
 export function SideNav() {
-  const { channels, activeChannel, setActiveChannel, fetchChannels } =
-    useChatsContext();
+  const { channels, activeChannel, setActiveChannel } = useAppContext();
 
   const [showInput, setShowInput] = useState(false);
   const [input, setInput] = useState("");
@@ -21,11 +20,9 @@ export function SideNav() {
   useEffect(() => {
     if (loading) return;
     if (data && data.createChannel && data.createChannel.success) {
-      fetchChannels?.();
       setShowInput(false);
       setInput("");
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading]);
 
   const addChannel = (e) => {
@@ -46,22 +43,24 @@ export function SideNav() {
           </button>
         </div>
         <ul>
-          {channels.map((channel) => (
-            <li
-              key={channel.id}
-              className={
-                activeChannel.name === channel.name ? "font-semibold" : ""
-              }
-            >
-              <button
-                className="flex flex-row space-x-0.5 items-center hover:bg-slate-100 px-4 py-2  w-full"
-                onClick={() => setActiveChannel(channel)}
-              >
-                <HashtagIcon className="w-4 h-4" />
-                <span>{channel.name}</span>
-              </button>
-            </li>
-          ))}
+          {channels
+            ? channels.map((channel) => (
+                <li
+                  key={channel.id}
+                  className={
+                    activeChannel.name === channel.name ? "font-semibold" : ""
+                  }
+                >
+                  <button
+                    className="flex flex-row space-x-0.5 items-center hover:bg-slate-100 px-4 py-2  w-full"
+                    onClick={() => setActiveChannel(channel)}
+                  >
+                    <HashtagIcon className="w-4 h-4" />
+                    <span>{channel.name}</span>
+                  </button>
+                </li>
+              ))
+            : null}
           {showInput ? (
             <li className="flex justify-center">
               <form onSubmit={addChannel}>

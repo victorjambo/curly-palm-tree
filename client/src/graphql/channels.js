@@ -6,6 +6,15 @@ export const GET_CHANNELS = gql`
       name
       id
       createdAt
+      chats {
+        createdAt
+        id
+        message
+        user {
+          username
+          id
+        }
+      }
     }
   }
 `;

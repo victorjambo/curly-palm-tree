@@ -1,19 +1,18 @@
 import { HashtagIcon } from "@heroicons/react/20/solid";
-import { useChatsContext } from "../context/chats.provider";
-import { useAuthContext } from "../context/auth.provider";
+import { useAppContext } from "../context/app.provider";
 
 /**
  * Header component
  * @returns {React.JSX.Element}
  */
 function Header() {
-  const { activeChannel } = useChatsContext();
-  const { isAuth, setUser, setIsAuth } = useAuthContext();
+  const { activeChannel, isAuthenticated, setIsAuthenticated, setCurrentUser } =
+    useAppContext();
 
   const logout = () => {
     localStorage.clear();
-    setUser(null);
-    setIsAuth(false);
+    setCurrentUser(null);
+    setIsAuthenticated(false);
   };
 
   return (
@@ -22,7 +21,7 @@ function Header() {
         <HashtagIcon className="w-4 h-4" />
         <span>{activeChannel?.name ?? "Channel"}</span>
       </div>
-      {isAuth ? (
+      {isAuthenticated ? (
         <button
           className="mr-4 px-4 hover:bg-slate-200 rounded-md"
           onClick={logout}

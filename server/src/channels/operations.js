@@ -11,7 +11,7 @@ export async function getChannels() {
           id: true,
           message: true,
           user: true,
-          createdAt: true
+          createdAt: true,
         },
       },
     },
@@ -31,5 +31,26 @@ export async function createChannel(channel) {
 
   return await prisma.channel.create({
     data: channel,
+  });
+}
+
+export async function getChannelById({ channelId }) {
+  /** @type {import('@prisma/client').PrismaClient} */
+  const prisma = getPrismaClient();
+
+  return await prisma.channel.findUnique({
+    where: {
+      id: channelId,
+    },
+    include: {
+      chats: {
+        select: {
+          id: true,
+          message: true,
+          user: true,
+          createdAt: true,
+        },
+      },
+    },
   });
 }

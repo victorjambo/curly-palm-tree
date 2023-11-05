@@ -3,42 +3,30 @@ import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import { useMutation, useQuery } from "@apollo/client";
 import { GET_USERS, LOGIN_AS } from "../graphql/accounts";
-import { useAuthContext } from "../context/auth.provider";
 import { useAppContext } from "../context/app.provider";
 
 function LoginAs() {
-  const { data, loading } = useQuery(GET_USERS);
-  const { setUsers, setIsAuth, setUser } = useAuthContext();
-  const [
-    loginAs,
-    { data: loginAsData, loading: loginAsLoading, loginAsError },
-  ] = useMutation(LOGIN_AS);
-  const { handleToast } = useAppContext();
+  const { data: usersData } = useQuery(GET_USERS);
+  const { setIsAuthenticated, setCurrentUser, handleToast } = useAppContext();
+  const [loginAs, { data, loading, error }] = useMutation(LOGIN_AS);
 
   useEffect(() => {
     if (loading) return;
-    setUsers(data.users);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loading]);
 
-  useEffect(() => {
-    if (loginAsLoading) return;
-
-    if (loginAsData?.loginAs?.success) {
-      const currentUser = loginAsData.loginAs.user;
+    if (data?.loginAs?.success) {
+      const currentUser = data.loginAs.user;
       handleToast?.("Successfully logged in", "SUCCESS");
-      localStorage.setItem("chat.token", loginAsData.loginAs.accessToken);
-      localStorage.setItem("chat.user", JSON.stringify(currentUser));
-      setIsAuth?.(true);
-      setUser?.(currentUser);
+      localStorage.setItem("chat-token", data.loginAs.accessToken);
+      localStorage.setItem("chat-user", JSON.stringify(currentUser));
+      setIsAuthenticated?.(true);
+      setCurrentUser?.(currentUser);
     }
 
-    if (loginAsError) {
+    if (error) {
       handleToast("Error logging in", "WARN");
-      console.warn(loginAsError);
+      console.warn(error);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loginAsLoading]);
+  }, [loading]);
 
   return (
     <div className="absolute top-10 right-10">
@@ -62,8 +50,8 @@ function LoginAs() {
           leaveTo="transform opacity-0 scale-95"
         >
           <Menu.Items className="absolute right-0 mt-2 w-36 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none">
-            {data?.users
-              ? data.users.map((user) => (
+            {usersData?.users
+              ? usersData.users.map((user) => (
                   <div className="px-1 py-1" key={user.id}>
                     <Menu.Item>
                       {({ active }) => (

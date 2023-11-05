@@ -22,6 +22,7 @@ export const typeDefs = gql`
 
   type Query {
     channels: [Channel]
+    getChannelById(channelId: Int!): Channel
   }
 
   type ChannelMutationResponse {

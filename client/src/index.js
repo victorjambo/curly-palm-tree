@@ -4,9 +4,7 @@ import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import { ApolloProvider } from "@apollo/client";
 import AppProvider from "./context/app.provider";
-import AuthProvider from "./context/auth.provider";
 import { client } from "./utils/apollo-client";
-import ChatsProvider from "./context/chats.provider";
 import { RouterProvider } from "react-router-dom";
 import { routers } from "./pages/routes";
 
@@ -14,13 +12,9 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <ApolloProvider client={client}>
-      <AuthProvider>
-        <AppProvider>
-          <ChatsProvider>
-            <RouterProvider router={routers} />
-          </ChatsProvider>
-        </AppProvider>
-      </AuthProvider>
+      <AppProvider>
+        <RouterProvider router={routers} />
+      </AppProvider>
     </ApolloProvider>
   </React.StrictMode>
 );

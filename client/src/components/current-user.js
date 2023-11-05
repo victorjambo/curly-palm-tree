@@ -1,16 +1,16 @@
 import { Navigate } from "react-router-dom";
 import Jazzicon from "./avatar";
-import { useAuthContext } from "../context/auth.provider";
+import { useAppContext } from "../context/app.provider";
 
 function CurrentUser() {
-  const { user } = useAuthContext();
+  const { currentUser } = useAppContext();
   return (
     <div className="flex">
-      {user ? (
+      {currentUser ? (
         <div className="m-6 flex items-center">
-          <Jazzicon size={35} username={user.username} />
+          <Jazzicon size={35} username={currentUser.username} />
           <div className="flex flex-col pl-2">
-            <span className="">{user.username}</span>
+            <span className="">{currentUser.username}</span>
             <span className="text-xs text-slate-400">current user</span>
           </div>
         </div>

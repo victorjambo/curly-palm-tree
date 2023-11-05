@@ -1,16 +1,20 @@
 import { useEffect, useState } from "react";
 import { useAppContext } from "../context/app.provider";
-import { AuthType, useAuthContext } from "../context/auth.provider";
 import { useMutation } from "@apollo/client";
 import { LOGIN, SIGNUP } from "../graphql/accounts";
 import { Navigate } from "react-router-dom";
 import LoginAs from "../components/login-as";
 
-function Auth() {
-  const { authType, setIsAuth, setUser, isAuth, setAuthType } =
-    useAuthContext();
-  const { handleToast } = useAppContext();
+const AuthType = {
+  Login: "Login",
+  Signup: "Signup",
+};
 
+function Auth() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [authType, setAuthType] = useState(AuthType.Login);
   const [disabled, setDisabled] = useState(false);
   const [errors] = useState({
     username: "",
@@ -18,10 +22,11 @@ function Auth() {
     confirmPassword: "",
   });
 
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  // hooks
+  const { setIsAuthenticated, setCurrentUser, isAuthenticated, handleToast } =
+    useAppContext();
 
+  // Apollo Client services
   const [login, { data: loginData, loading: loginLoading, error: loginError }] =
     useMutation(LOGIN);
   const [
@@ -29,6 +34,7 @@ function Auth() {
     { data: signupData, loading: signupLoading, error: signupError },
   ] = useMutation(SIGNUP);
 
+  // Effects
   useEffect(() => {
     if (loginLoading) return;
 
@@ -74,12 +80,12 @@ function Auth() {
   const handleSuccess = () => {
     const data =
       authType === AuthType.Login ? loginData.login : signupData.signup;
-    const currentUser = data.user;
+
     handleToast?.("Successfully logged in", "SUCCESS");
     localStorage.setItem("chat.token", data.accessToken);
-    localStorage.setItem("chat.user", JSON.stringify(currentUser));
-    setIsAuth?.(true);
-    setUser?.(currentUser);
+    localStorage.setItem("chat.user", JSON.stringify(data.user));
+    setIsAuthenticated?.(true);
+    setCurrentUser?.(data.user);
   };
 
   const handleAuth = async () => {
@@ -231,7 +237,7 @@ function Auth() {
           </div>
         </div>
       </div>
-      {isAuth ? <Navigate to="/" replace={true} /> : null}
+      {isAuthenticated ? <Navigate to="/" replace={true} /> : null}
     </>
   );
 }

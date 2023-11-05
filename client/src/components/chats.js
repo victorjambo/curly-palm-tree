@@ -1,19 +1,24 @@
-import { useRef, useEffect } from "react";
-import { useChatsContext } from "../context/chats.provider";
+import { useRef, useEffect, useState } from "react";
+import { useAppContext } from "../context/app.provider";
 import { Chat } from "./chat";
+import { useSmoothScroll } from "../hooks/useSmoothScroll";
 
 export function Chats() {
-  const { chats } = useChatsContext();
+  const { channels, activeChannel } = useAppContext();
+
+  const [chats, setChats] = useState([]);
 
   const ref = useRef(null);
+  useSmoothScroll({ len: chats.length, ref });
+
   useEffect(() => {
-    if (chats.length) {
-      ref.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "end",
-      });
+    const channel = channels.find((channel) => channel.id === activeChannel.id);
+    if (channel) {
+      setChats(channel.chats);
+    } else {
+      setChats([]);
     }
-  }, [chats.length]);
+  }, [activeChannel.id, channels]);
 
   return (
     <section className="flex-1 h-full flex-col overflow-scroll">
