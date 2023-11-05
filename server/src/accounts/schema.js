@@ -19,5 +19,6 @@ export const typeDefs = gql`
   type Mutation {
     signup(username: String!, password: String!): AccountMutationResponse!
     login(username: String!, password: String!): AccountMutationResponse!
+    loginAs(id: Int!): AccountMutationResponse!
   }
 `;

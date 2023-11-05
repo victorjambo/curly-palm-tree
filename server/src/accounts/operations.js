@@ -101,3 +101,22 @@ export async function getUserById(id) {
 
   return user;
 }
+
+export async function loginAs({ id }) {
+  /** @type {import('@prisma/client').PrismaClient} */
+  const prisma = getPrismaClient();
+
+  const foundUser = await prisma.user.findFirst({
+    where: { id },
+  });
+
+  if (!foundUser) {
+    throw new GraphQLError("User not found", {
+      extensions: {
+        code: "NOT_FOUND",
+      },
+    });
+  }
+
+  return exclude(foundUser, ["password"]);
+}

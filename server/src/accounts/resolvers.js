@@ -1,12 +1,16 @@
 import { makeExecutableSchema } from "@graphql-tools/schema";
 import { typeDefs } from "./schema.js";
-import { getAllUsers, createAccount, loginAccount } from "./operations.js";
+import {
+  getAllUsers,
+  createAccount,
+  loginAccount,
+  loginAs,
+} from "./operations.js";
 import { generateTokens } from "./auth.js";
-import { withAuth } from "../utils/token.js";
 
 const resolvers = {
   Query: {
-    users: withAuth(getAllUsers),
+    users: getAllUsers,
   },
   Mutation: {
     signup: async (_parent, args, _context, _info) => {
@@ -22,6 +26,17 @@ const resolvers = {
     },
     login: async (_parent, args, _context, _info) => {
       const user = await loginAccount(args);
+
+      const accessToken = generateTokens(user.id);
+
+      return {
+        user,
+        accessToken,
+        success: true,
+      };
+    },
+    loginAs: async (_parent, args, _context, _info) => {
+      const user = await loginAs(args);
 
       const accessToken = generateTokens(user.id);
 

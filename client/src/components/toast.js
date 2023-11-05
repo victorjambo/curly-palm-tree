@@ -1,5 +1,5 @@
-import { useAppContext } from "../context/app.provider";
 import React, { useEffect } from "react";
+import { useAppContext } from "../context/app.provider";
 
 /**
  * Reusable Toast Element
@@ -22,7 +22,7 @@ const Toast = () => {
     <div>
       {showToast ? (
         <div
-          className="fixed top-10 right-5 flex items-center w-full max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800"
+          className="fixed top-10 right-5 flex items-center w-full max-w-xs p-4 text-gray-200 bg-black/80 rounded-lg shadow dark:text-gray-400 dark:bg-gray-800"
           role="alert"
         >
           {toastType === "WARN" ? (

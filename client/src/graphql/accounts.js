@@ -25,12 +25,25 @@ export const LOGIN = gql`
 export const SIGNUP = gql`
   mutation Signup($username: String!, $password: String!) {
     signup(username: $username, password: $password) {
+      accessToken
       success
       user {
         username
         id
       }
+    }
+  }
+`;
+
+export const LOGIN_AS = gql`
+  mutation LoginAs($loginAsId: Int!) {
+    loginAs(id: $loginAsId) {
       accessToken
+      success
+      user {
+        username
+        id
+      }
     }
   }
 `;

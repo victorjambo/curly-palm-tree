@@ -9,6 +9,8 @@
  * @property {(token: string) =>  void} setToken
  * @property {{ id: number; username: string }} user
  * @property {(arg: { id: number; username: string }) => void} setUser
+ * @property {{ id: number; username: string }[]} users
+ * @property {(arg: { id: number; username: string }[]) => void} setUsers
  * @property {"Login" | "Signup"} authType
  * @property {(arg: "Login" | "Signup") => void} setAuthType
  */
@@ -34,6 +36,7 @@ const AuthProvider = ({ children }) => {
 
   const [token, setToken] = useState("");
   const [authType, setAuthType] = useState(AuthType.Login);
+  const [users, setUsers] = useState([]);
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -59,6 +62,8 @@ const AuthProvider = ({ children }) => {
         setUser,
         token,
         setToken,
+        users,
+        setUsers,
       }}
     >
       {children}

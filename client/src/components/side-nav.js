@@ -1,10 +1,9 @@
 import { HashtagIcon, PlusCircleIcon } from "@heroicons/react/20/solid";
-import Jazzicon from "./avatar";
 import { useChatsContext } from "../context/chats.provider";
-import { useAuthContext } from "../context/auth.provider";
 import { useEffect, useState } from "react";
 import { CREATE_CHANNEL } from "../graphql/channels";
 import { useMutation } from "@apollo/client";
+import CurrentUser from "./current-user";
 
 /**
  * Navbar component
@@ -13,7 +12,6 @@ import { useMutation } from "@apollo/client";
 export function SideNav() {
   const { channels, activeChannel, setActiveChannel, fetchChannels } =
     useChatsContext();
-  const { user } = useAuthContext();
 
   const [showInput, setShowInput] = useState(false);
   const [input, setInput] = useState("");
@@ -80,19 +78,7 @@ export function SideNav() {
           ) : null}
         </ul>
       </div>
-      <div className="flex">
-        {user ? (
-          <div className="m-6 flex items-center">
-            <Jazzicon size={35} username={user.username} />
-            <div className="flex flex-col pl-2">
-              <span className="">{user.username}</span>
-              <span className="text-xs text-slate-400">current user</span>
-            </div>
-          </div>
-        ) : (
-          <div />
-        )}
-      </div>
+      <CurrentUser />
     </nav>
   );
 }
