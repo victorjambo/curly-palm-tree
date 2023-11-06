@@ -58,7 +58,9 @@ export function TextArea() {
           className="text-slate-400 p-3  border-l-2 border-slate-400"
           onClick={handleSendChat}
         >
-          <PaperAirplaneIcon className="w-5 h-5" />
+          <PaperAirplaneIcon
+            className={`w-5 h-5 ${value ? "text-[#4f87f6]" : ""}`}
+          />
         </button>
       </div>
     </section>

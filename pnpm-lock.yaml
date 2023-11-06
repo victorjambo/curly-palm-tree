@@ -121,6 +121,9 @@ importers:
       prisma:
         specifier: ^5.5.2
         version: 5.5.2
+      random-word-slugs:
+        specifier: ^0.1.7
+        version: 0.1.7
       ws:
         specifier: ^8.14.2
         version: 8.14.2
@@ -10101,6 +10104,10 @@ packages:
     resolution: {integrity: sha512-Sq4CW4QhwOHE8ucn6J34MqtZCeWFP2aQSmrlroYgqAV1PjStIhJXxYuTgUIfkEk7zTLjmIjLmU5q+fbD1NnOJA==}
     dependencies:
       performance-now: 2.1.0
+    dev: false
+
+  /random-word-slugs@0.1.7:
+    resolution: {integrity: sha512-8cyzxOIDeLFvwSPTgCItMXHGT5ZPkjhuFKUTww06Xg1dNMXuGxIKlARvS7upk6JXIm41ZKXmtlKR1iCRWklKmg==}
     dev: false
 
   /randombytes@2.1.0:

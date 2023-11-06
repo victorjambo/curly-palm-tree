@@ -35,9 +35,10 @@ export const typeDefs = gql`
   }
 
   type Mention {
-    user: User
-    channel: String
+    to: Int
     from: Int
+    channel: String
+    message: String
   }
 
   type Subscription {

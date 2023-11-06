@@ -2,7 +2,7 @@ import { Chats } from "./chats";
 import Header from "./header";
 import { TextArea } from "./text-area";
 import { MENTION } from "../graphql/chats";
-import { useSubscription, subscribeToMore } from "@apollo/client";
+import { useSubscription } from "@apollo/client";
 import { useEffect } from "react";
 import { useAppContext } from "../context/app.provider";
 
@@ -17,10 +17,14 @@ export function MainChat() {
   useEffect(() => {
     if (loading || !data?.mention) return;
 
-    if (data.mention.user.id === currentUser.id && data.mention.from !== currentUser.id) {
+    if (
+      data.mention.to === currentUser.id &&
+      data.mention.from !== currentUser.id
+    ) {
       handleToast?.(
-        `You have been mentioned in #${data.mention.channel} channel`,
-        "SUCCESS"
+        data.mention.message,
+        undefined,
+        `Mention in #${data.mention.channel}`
       );
     }
   }, [loading, JSON.stringify(data), currentUser]);

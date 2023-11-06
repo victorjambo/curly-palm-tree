@@ -61,11 +61,9 @@ export const MENTION = gql`
   subscription Mention {
     mention {
       channel
-      user {
-        username
-        id
-      }
       from
+      message
+      to
     }
   }
 `;

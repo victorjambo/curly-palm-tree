@@ -6,7 +6,8 @@ import { useAppContext } from "../context/app.provider";
  * @returns {React.JSX.Element}
  */
 const Toast = () => {
-  const { toastMessage, showToast, setShowToast, toastType } = useAppContext();
+  const { toastMessage, showToast, setShowToast, toastType, toastTitle } =
+    useAppContext();
 
   useEffect(() => {
     if (showToast) {
@@ -30,7 +31,12 @@ const Toast = () => {
           ) : toastType === "SUCCESS" ? (
             <Success />
           ) : null}
-          <div className="ml-3 text-sm font-normal w-2/3">{toastMessage}</div>
+          <div className="flex flex-col ml-3">
+            {toastTitle ? (
+              <div className="font-semibold">{toastTitle}</div>
+            ) : null}
+            <div className="text-sm font-extralight">{toastMessage}</div>
+          </div>
           <button
             type="button"
             onClick={handleClose}

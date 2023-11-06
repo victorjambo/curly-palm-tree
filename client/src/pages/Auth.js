@@ -16,11 +16,6 @@ function Auth() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [authType, setAuthType] = useState(AuthType.Login);
   const [disabled, setDisabled] = useState(false);
-  const [errors] = useState({
-    username: "",
-    password: "",
-    confirmPassword: "",
-  });
 
   // hooks
   const { setIsAuthenticated, setCurrentUser, handleToast } = useAppContext();
@@ -121,15 +116,8 @@ function Auth() {
                     onChange={(e) => setUsername(e.target.value)}
                     placeholder="Username..."
                     type="text"
-                    className={`w-full px-4 py-2 border bg-transparent focus-visible:outline-none focus:ring-1 focus:ring-[#2563eb] rounded-md ${
-                      errors.username ? "border-[#fe5c4c]" : "border-[#3e3f4b]"
-                    }`}
+                    className="w-full px-4 py-2 border bg-transparent focus-visible:outline-none focus:ring-1 focus:ring-[#2563eb] rounded-md border-[#3e3f4b]"
                   />
-                  {errors.username ? (
-                    <span className="text-[#fe5c4c] text-xs">
-                      {errors.username}
-                    </span>
-                  ) : null}
                 </div>
               </div>
 
@@ -143,15 +131,8 @@ function Auth() {
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Password..."
                     type="password"
-                    className={`w-full px-4 py-2 border bg-transparent focus-visible:outline-none focus:ring-1 focus:ring-[#2563eb] rounded-md ${
-                      errors.password ? "border-[#fe5c4c]" : "border-[#3e3f4b]"
-                    }`}
+                    className="w-full px-4 py-2 border bg-transparent focus-visible:outline-none focus:ring-1 focus:ring-[#2563eb] rounded-md border-[#3e3f4b]"
                   />
-                  {errors.password ? (
-                    <span className="text-[#fe5c4c] text-xs">
-                      {errors.password}
-                    </span>
-                  ) : null}
                 </div>
               </div>
 
@@ -166,17 +147,8 @@ function Auth() {
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       placeholder="Password..."
                       type="password"
-                      className={`w-full px-4 py-2 border bg-transparent focus-visible:outline-none focus:ring-1 focus:ring-[#2563eb] rounded-md ${
-                        errors.confirmPassword
-                          ? "border-[#fe5c4c]"
-                          : "border-[#3e3f4b]"
-                      }`}
+                      className="w-full px-4 py-2 border bg-transparent focus-visible:outline-none focus:ring-1 focus:ring-[#2563eb] rounded-md border-[#3e3f4b]"
                     />
-                    {errors.confirmPassword ? (
-                      <span className="text-[#fe5c4c] text-xs">
-                        {errors.confirmPassword}
-                      </span>
-                    ) : null}
                   </div>
                 </div>
               ) : null}

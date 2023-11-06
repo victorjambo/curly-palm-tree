@@ -9,7 +9,8 @@
     "client:dev": "pnpm -r --parallel --filter client dev",
     "prisma:generate": "pnpm --filter server prisma:generate",
     "prisma:mig": "pnpm --filter server prisma:mig",
-    "prisma:migrate": "pnpm --filter server prisma:migrate"
+    "prisma:migrate": "pnpm --filter server prisma:migrate",
+    "prisma:seed": "pnpm --filter server prisma:seed"
   },
   "author": "@victormutai",
   "license": "ISC"

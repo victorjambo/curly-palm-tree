@@ -2,12 +2,19 @@
  * @typedef ContextProps
  * @type {Object}
  * @property {string} toastMessage
- * @property {(message: string) => void} setToastMessage
  * @property {boolean} showToast
  * @property {"SUCCESS" | "WARN"} toastType
- * @property {(type: "SUCCESS" | "WARN") => void} setToastType
  * @property {(message: string, type: "SUCCESS" | "WARN") => void} handleToast
+ * @property {Object[]} channels
+ * @property {Object} activeChannel
+ * @property {(arg: Object) => void} setActiveChannel
+ * @property {Object} currentUser
+ * @property {boolean} isAuthenticated
+ * @property {(arg: boolean) => void} setIsAuthenticated
+ * @property {(arg: Object) => void} setCurrentUser
+ * @property {(arg: Object[]) => void} setChannels
  * @property {(show: boolean) => void} setShowToast
+ * @property {string} toastTitle
  */
 
 import { createContext, useContext, useEffect, useState } from "react";
@@ -32,6 +39,7 @@ const AppProvider = ({ children }) => {
   const [toastMessage, setToastMessage] = useState("");
   const [showToast, setShowToast] = useState(false);
   const [toastType, setToastType] = useState("SUCCESS");
+  const [toastTitle, setToastTitle] = useState("");
 
   // Authentication
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -46,7 +54,7 @@ const AppProvider = ({ children }) => {
     setCurrentUser,
     setIsAuthenticated,
   });
-  const { loading: channelsLoading, data } = useQuery(GET_CHANNELS);
+  const { loading: channelsLoading, data, refetch } = useQuery(GET_CHANNELS);
 
   // Effects
   useEffect(() => {
@@ -56,18 +64,28 @@ const AppProvider = ({ children }) => {
       setChannels(data.channels);
       setActiveChannel(data.channels[0]);
     }
-  }, [isAuthenticated, channelsLoading]);
+  }, [isAuthenticated, channelsLoading, JSON.stringify(data)]);
+
+  useEffect(() => {
+    if (channelsLoading) return;
+
+    if (!data && isAuthenticated) {
+      refetch();
+    }
+  }, [isAuthenticated, channelsLoading, JSON.stringify(data)]);
 
   /**
    * Handle Toast.
    * @param {string} msg
    * @param {"SUCCESS" | "WARN"} _toastType
+   * @param {string} _toastTitle
    * @returns {void}
    */
-  const handleToast = (msg, _toastType) => {
+  const handleToast = (msg, _toastType, _toastTitle) => {
     setShowToast(true);
     setToastMessage(msg);
     setToastType(_toastType);
+    setToastTitle(_toastTitle);
   };
 
   return (
@@ -85,7 +103,8 @@ const AppProvider = ({ children }) => {
         setIsAuthenticated,
         setCurrentUser,
         setChannels,
-        setShowToast
+        setShowToast,
+        toastTitle,
       }}
     >
       {children}

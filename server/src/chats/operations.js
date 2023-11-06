@@ -57,16 +57,22 @@ export async function createChat(data) {
   });
 
   let mention = null;
-  if (chat.message.includes("@")) {
-    const username = extractUsername(chat.message);
-    const user = await prisma.user.findUnique({ where: { username } });
-    if (user) {
-      mention = {
-        user: { id: user.id, username: user.username },
-        channel: chat.channel.name,
-        from: data.userId,
-      };
+  try {
+    if (chat.message.includes("@")) {
+      const username = extractUsername(chat.message);
+      const user = await prisma.user.findUnique({ where: { username } });
+      if (user) {
+        mention = {
+          to: user.id,
+          from: data.userId,
+          channel: chat.channel.name,
+          message: chat.message,
+        };
+      }
     }
+  } catch (error) {
+    // Fail silently
+    console.error(error);
   }
 
   return {

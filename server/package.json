@@ -15,7 +15,7 @@
     "prisma:migrate": "npx prisma migrate dev",
     "prisma:studio": "npx prisma studio ",
     "prisma:generate": "npx prisma generate",
-    "prisma:seed": "ts-node prisma/seed.ts",
+    "prisma:seed": "node prisma/seed.js",
     "prisma:dump": "npx prisma migrate reset --force && npx prisma migrate deploy"
   },
   "dependencies": {
@@ -39,6 +39,7 @@
     "jsonwebtoken": "^9.0.2",
     "nodemon": "^3.0.1",
     "prisma": "^5.5.2",
+    "random-word-slugs": "^0.1.7",
     "ws": "^8.14.2"
   },
   "author": "",
