@@ -19,6 +19,17 @@ If you wish to develop using all of the packages locally you can perform the fol
 4. Access server with `http://localhost:4000/graphql`
 5. Access client with `http://localhost:3000/`
 
+### Running client
+
+* Access client from <http://localhost:3000/login>
+* For easy authentication click `Login as` on the top right conner. Clicking a user name should auto login
+* Real time updates:
+    * Open 2 browser windows and login with different users
+    * Post a message on one window and you should see new message pop up
+* Mention:
+    * send message eg "hello @admin"
+    * you should see a pop up toast notification
+
 ### Tech
 
 1. Frontend
