@@ -11,9 +11,9 @@ const AuthType = {
 };
 
 function Auth() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [username, setUsername] = useState("admin");
+  const [password, setPassword] = useState("password");
+  const [confirmPassword, setConfirmPassword] = useState("password");
   const [authType, setAuthType] = useState(AuthType.Login);
   const [disabled, setDisabled] = useState(false);
 
