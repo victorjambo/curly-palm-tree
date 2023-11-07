@@ -43,6 +43,6 @@ export const typeDefs = gql`
 
   type Subscription {
     postCreated: Chat
-    mention: Mention
+    mention(userId: Int!): Mention!
   }
 `;

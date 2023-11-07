@@ -58,8 +58,8 @@ export const POST_CREATED = gql`
 `;
 
 export const MENTION = gql`
-  subscription Mention {
-    mention {
+  subscription Mention($userId: Int!) {
+    mention(userId: $userId) {
       channel
       from
       message
