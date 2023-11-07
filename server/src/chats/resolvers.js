@@ -2,7 +2,7 @@ import { makeExecutableSchema } from "@graphql-tools/schema";
 import { typeDefs } from "./schema.js";
 import { getChats, createChat, getChatsByChannelId } from "./operations.js";
 import { withAuth } from "../utils/token.js";
-import { PubSub } from "graphql-subscriptions";
+import { PubSub, withFilter } from "graphql-subscriptions";
 
 const pubsub = new PubSub();
 
@@ -37,7 +37,10 @@ const resolvers = {
       subscribe: () => pubsub.asyncIterator(["POST_CREATED"]),
     },
     mention: {
-      subscribe: () => pubsub.asyncIterator(["MENTION"]),
+      subscribe: withFilter(
+        () => pubsub.asyncIterator("MENTION"),
+        (payload, variables) => payload.mention.to === variables.userId
+      ),
     },
   },
 };

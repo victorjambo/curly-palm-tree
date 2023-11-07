@@ -12,21 +12,21 @@ import { useAppContext } from "../context/app.provider";
  */
 export function MainChat() {
   const { handleToast, currentUser } = useAppContext();
-  const { data, loading } = useSubscription(MENTION);
+  const { data, loading } = useSubscription(MENTION, {
+    variables: {
+      userId: currentUser?.id,
+    },
+    skip: !currentUser
+  });
 
   useEffect(() => {
     if (loading || !data?.mention) return;
 
-    if (
-      data.mention.to === currentUser.id &&
-      data.mention.from !== currentUser.id
-    ) {
-      handleToast?.(
-        data.mention.message,
-        undefined,
-        `Mention in #${data.mention.channel}`
-      );
-    }
+    handleToast?.(
+      data.mention.message,
+      undefined,
+      `Mention in #${data.mention.channel}`
+    );
   }, [loading, JSON.stringify(data), currentUser]);
 
   return (
